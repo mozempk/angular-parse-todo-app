@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  parseAppId: '6Me2XHk4VReucJ9buwts',
+  parseServerURL: 'https://todo-api-parse.mpk.dynu.net/parse/'
 };
 
 /*
