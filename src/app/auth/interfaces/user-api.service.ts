@@ -12,10 +12,10 @@ export class User {
 })
 
 export abstract class UserApiService {
-  abstract signup(username:string, password:string, email?:string):User;
-  abstract login(username:string,password:string):User
+  abstract signup(username:string, password:string, email?:string):User | void;
+  abstract login(username:string,password:string):User | void
   abstract logout(user?:any):boolean
-  abstract restore():User
+  abstract restore():User | void
   abstract isAuthenticated():boolean
   abstract getObservable():Observable<User>
 }

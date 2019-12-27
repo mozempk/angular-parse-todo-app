@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
-export class Todo {
+export abstract class Todo_t {
   id: string
   text:string
   done: boolean
@@ -12,9 +13,10 @@ export class Todo {
 })
 
 export abstract class TodoApiService {
-  abstract getTodo(user: any,id:string):Todo
-  abstract getTodos(user: any,limit?:number):Todo[]
-  abstract newTodo(user: any, todo: any):Todo
-  abstract editTodo(user: any,id:string, keyValue:any):Todo
-  abstract deleteTodo(user: any,id:string):boolean
+  abstract getObservable():Observable<Todo_t[]>
+  abstract getTodo(user: any,id:string):Todo_t
+  abstract getTodos(user?: any,limit?:number):Todo_t[]
+  abstract newTodo(todo: any, user?: any):Promise<Todo_t>
+  abstract editTodo(user: any,id:string, keyValue:any):Todo_t
+  abstract deleteTodo(todo:Todo_t):boolean
 }

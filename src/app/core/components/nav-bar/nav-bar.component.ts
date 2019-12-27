@@ -7,12 +7,12 @@ import { NavItemsService, NavItem } from '../../services/nav-items.service';
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent implements OnInit {
-  private title:string = 'Todo'
+  private title:string = 'Home'
   private navItems:NavItem[]
   constructor(navItemsService: NavItemsService) {
     navItemsService.getObservable().subscribe(items => {
       this.navItems = items
-      console.info('navItems',items)
+      // console.info('navItems',items)
     })
   }
 

@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css');
+@import url('https://cdn.materialdesignicons.com/4.7.95/css/materialdesignicons.min.css');
 html, body{
     height: 100vh;
    }

@@ -8,6 +8,7 @@ import { UnauthGuardService } from './auth/services/guards/unauth-guard.service'
 import { TodosComponent } from './todo/components/todos/todos.component';
 import { AppComponent } from './app.component';
 import { HomeGuardService } from './core/services/guards/home-guard.service';
+import { NewtodoComponent } from './todo/components/newtodo/newtodo.component'
 
 const routes: Routes = [
   {
@@ -33,6 +34,11 @@ const routes: Routes = [
   {
     path: 'logout',
     component: LogoutComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'new',
+    component: NewtodoComponent,
     canActivate: [AuthGuardService]
   },
 ];
