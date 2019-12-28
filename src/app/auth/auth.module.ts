@@ -1,28 +1,35 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+import { AuthRoutingModule } from './auth-routing.module';
+import { IAuthService } from './services/auth.service';
+import { AuthService } from './services/impl/auth.impl.service';
+import { UnauthGuard } from './guards/unauth.guard';
 import { LoginComponent } from './components/login/login.component';
 import { LogoutComponent } from './components/logout/logout.component';
 import { SignupComponent } from './components/signup/signup.component';
-import { FormsModule } from '@angular/forms';
-import { UserApiService } from './interfaces/user-api.service';
-import { AuthService } from './services/auth.service';
-import { AuthGuardService } from './services/guards/auth-guard.service';
-import { UnauthGuardService } from './services/guards/unauth-guard.service';
+import { AuthGuard } from './guards/auth.guard';
 
 
 @NgModule({
-  declarations: [LoginComponent, LogoutComponent, SignupComponent],
+  declarations: [
+    LoginComponent,
+    LogoutComponent,
+    SignupComponent
+  ],
   imports: [
     CommonModule,
+    AuthRoutingModule,
     FormsModule
   ],
   providers: [
     {
-      provide: UserApiService,
+      provide: IAuthService,
       useClass: AuthService
     },
-    AuthGuardService,
-    UnauthGuardService
+    AuthGuard,
+    UnauthGuard
   ]
 })
 export class AuthModule { }

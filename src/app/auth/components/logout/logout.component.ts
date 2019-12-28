@@ -1,18 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { UserApiService } from '../../interfaces/user-api.service';
+import { IAuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-logout',
   templateUrl: './logout.component.html',
   styleUrls: ['./logout.component.css'],
 })
 export class LogoutComponent implements OnInit {
-  private userApiService = undefined
-  constructor(private UserApiService: UserApiService) {
-    this.userApiService = UserApiService
-  }
+
+  constructor(private authService: IAuthService) {}
 
   logout() {
-    this.userApiService.logout()
+    this.authService.logout()
   }
 
   ngOnInit() {

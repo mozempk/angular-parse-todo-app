@@ -1,18 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-
-export abstract class Todo_t {
-  id: string
-  text:string
-  done: boolean
-  _Todo: any
-}
+import { Todo_t } from '../models/todo';
 
 @Injectable({
   providedIn: 'root'
 })
 
-export abstract class TodoApiService {
+export abstract class ITodoService {
   abstract getObservable():Observable<Todo_t[]>
   abstract getTodo(user: any,id:string):Todo_t
   abstract getTodos(user?: any,limit?:number):Todo_t[]

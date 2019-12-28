@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { UserApiService } from 'src/app/auth/interfaces/user-api.service';
 import { Router } from '@angular/router';
+import { IAuthService } from 'src/app/auth/services/auth.service';
 
 export class NavItem {
   text: string
@@ -22,7 +22,6 @@ export class NavItem {
 export class NavItemsService {
   private navItemsSubject:BehaviorSubject<NavItem[]> = new BehaviorSubject([])
   private navItemsObservable:Observable<NavItem[]> = this.navItemsSubject.asObservable()
-  private userApiService:UserApiService
   private itemsSet = 'unauthenticated'
   private navItems = {
     authenticated: [
@@ -34,30 +33,29 @@ export class NavItemsService {
       new NavItem({
         text:'New',
         active: false,
-        link: 'new'
+        link: 'todos/new'
       }),
       new NavItem({
         text:'Logout',
         active: false,
-        link: 'logout'
+        link: 'auth/logout'
       }),
     ],
     unauthenticated: [
       new NavItem({
         text:'Signup',
         active: false,
-        link: 'signup'
+        link: 'auth/signup'
       }),
       new NavItem({
         text:'Login',
         active: false,
-        link: 'login'
+        link: 'auth/login'
       })
     ]
   }
-  constructor(private UserApiService: UserApiService, router: Router) {
-    this.userApiService = UserApiService
-    this.userApiService.getObservable().subscribe(user => {
+  constructor(private authService: IAuthService, router: Router) {
+    this.authService.getObservable().subscribe(user => {
       console.info(user)
       if (user.name !== undefined) {
         this.itemsSet = 'authenticated';

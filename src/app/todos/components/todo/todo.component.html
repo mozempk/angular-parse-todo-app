@@ -1,0 +1,36 @@
+<div class="card-body col-12">
+  <div class="row">
+      <div class="col-10">
+          <h5 *ngIf="!editingTodo.editing && !(todo.id === editingTodo.id)" [ngClass]="{'card-title': true, 'todoDone': todo.done}">{{todo.text}}</h5>
+          <form *ngIf="editingTodo.editing && todo.id === editingTodo.id">
+              <div class="form-group">
+                  <!-- <label for="todoText">New Text</label> -->
+                  <input class="form-control" type="text" name="todoText" id="todoText" placeholder="{{todo.text}}" [(ngModel)]="editingTodo.props.text">
+              </div>
+          </form>
+      </div>
+      <div class="col-2">
+          <div class="row justify-content-center">
+              <h6 class="card-subtitle mb-2 text-muted">{{getFormattedDate()}}</h6>
+          </div>
+      </div>
+  </div>
+  <div class="row justify-content-end">
+      <div class="col-2">
+          <div class="row justify-content-center">
+              <span (click)="toggleDone()" [ngClass]="{'mdi': true, 'mdi-check-circle-outline': true, 'greenCheck':todo.done}"  style="font-size: 48px;"></span>
+          </div>
+      </div>
+  </div>
+  <div class="row justify-content-end mt-4">
+      <div class="col-2">
+          <button class="btn btn-outline-primary btn-block" (click)="edit()">{{editSaveButtonText}}</button>
+      </div>
+      <div class="col-2" *ngIf="!editingTodo.editing">
+          <button class="btn btn-outline-danger btn-block" (click)="delete()">Delete</button>
+      </div>
+      <div class="col-2" *ngIf="editingTodo.editing">
+          <button class="btn btn-outline-danger btn-block" (click)="cancel()">Cancel</button>
+      </div>
+  </div>
+</div>

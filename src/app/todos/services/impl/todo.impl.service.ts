@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { TodoApiService, Todo_t } from '../interfaces/todo-api.service';
+import { ITodoService } from '../todo.service';
 import Parse from 'parse'
 import { BehaviorSubject, Observable } from 'rxjs';
+import { Todo_t } from '../../models/todo';
 
 class Todo extends Parse.Object implements Todo_t  {
   id: string;
@@ -20,8 +21,8 @@ class Todo extends Parse.Object implements Todo_t  {
 @Injectable({
   providedIn: 'root'
 })
-export class TodoService implements TodoApiService {
-  
+export class TodoService implements ITodoService {
+
   getTodo(user: any, id: string): Todo {
     throw new Error("Method not implemented.");
   }
@@ -43,7 +44,7 @@ export class TodoService implements TodoApiService {
       })
     return todoList
   }
-  
+
   newTodo(todo: any, user?: any): Promise<Todo> {
       const currentUser = Parse.User.current()
       const newTodo = new Todo()
@@ -79,7 +80,7 @@ export class TodoService implements TodoApiService {
           })
         })
   }
-  
+
   editTodo(todo: Todo, keyValue:any): void {
     console.info('Editing todo:',todo,'new values',keyValue)
     return this.todoList.forEach(t => {
@@ -136,11 +137,11 @@ export class TodoService implements TodoApiService {
   getObservable():Observable<Todo[]>{
     return this.todosObservable
   }
-  
+
   private todosSubject: BehaviorSubject<Todo[]> = new BehaviorSubject([])
   private todosObservable: Observable<Todo[]> = this.todosSubject.asObservable()
   private todoList:Todo[]
-  
+
   constructor() {
     this.getTodos({})
     console.info('todoList',this.todoList)

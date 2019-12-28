@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { UserApiService } from '../../interfaces/user-api.service'
+import { IAuthService } from '../../services/auth.service';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -9,14 +10,12 @@ export class LoginComponent implements OnInit {
 
   private username:string
   private password:string
-  private userApiService:UserApiService = undefined
-  constructor(UserApiService: UserApiService) {
-    this.userApiService = UserApiService
-  }
+
+  constructor(private authService: IAuthService) {}
 
   onSubmit(){
     console.info('Submitting user for login',this.username)
-    this.userApiService.login(this.username,this.password)
+    this.authService.login(this.username,this.password)
   }
 
   ngOnInit() {

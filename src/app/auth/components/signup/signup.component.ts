@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { UserApiService } from '../../interfaces/user-api.service'
+import { IAuthService } from '../../services/auth.service';
+
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
@@ -9,13 +10,12 @@ export class SignupComponent implements OnInit {
 
   private username:string
   private password:string
-  private userApiService = undefined
-  constructor(private UserApiService: UserApiService) {
-    this.userApiService = UserApiService
-  }
+
+  constructor(private authService: IAuthService) {}
+
   onSubmit(){
-    this.userApiService.signup(this.username,this.password)
-    this.userApiService.userObservable.subscribe(user => {
+    this.authService.signup(this.username,this.password)
+    this.authService.getObservable().subscribe(user => {
       console.info('User observable',user)
     })
   }
