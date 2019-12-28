@@ -16,14 +16,18 @@ class Todo extends Parse.Object implements Todo_t  {
       super(Todo.className)
   }
 }
+
 @Injectable({
   providedIn: 'root'
 })
 export class TodoService implements TodoApiService {
+  
   getTodo(user: any, id: string): Todo {
     throw new Error("Method not implemented.");
   }
+
   getTodos(user: any, limit?: number): Todo[] {
+    this.todosSubject.next([])
     Todo.register()
     let todoList:Todo[] = []
     const q = new Parse.Query(Todo)
@@ -39,6 +43,7 @@ export class TodoService implements TodoApiService {
       })
     return todoList
   }
+  
   newTodo(todo: any, user?: any): Promise<Todo> {
       const currentUser = Parse.User.current()
       const newTodo = new Todo()
@@ -56,9 +61,7 @@ export class TodoService implements TodoApiService {
       acl.setWriteAccess(currentUser.id,true)
       newTodo._Todo.setACL(acl)
 
-
-      
-      let p = newTodo._Todo.save()
+      return newTodo._Todo.save()
         .then(t => {
           let mt = new Todo()
           mt.id = t.id
@@ -66,14 +69,38 @@ export class TodoService implements TodoApiService {
           mt.text = t.get('title')
           mt._Todo = t
           console.info('Succesfully created new todo:',mt)
-          // this.todoList.push(mt)
-          this.todoList[this.todoList.length] = mt
-          this.todosSubject.next(this.todoList)
+          this.todosSubject.next(null)
+          return new Promise((resolve, reject) => {
+            let size = this.todoList.length
+            this.todoList.unshift(mt)
+            console.info('[NewTodo] current todoList: ',this.todoList)
+            this.todosSubject.next(this.todoList)
+            if (this.todoList.length > size) resolve()
+          })
         })
-        return p
   }
-  editTodo(user: any, id: string, keyValue: any): Todo {
-    throw new Error("Method not implemented.");
+  
+  editTodo(todo: Todo, keyValue:any): void {
+    console.info('Editing todo:',todo,'new values',keyValue)
+    return this.todoList.forEach(t => {
+      if(t.id === todo.id) {
+        console.info('found todo with id: ',t.id)
+        for(let k of Object.keys(keyValue)) {
+          console.info('setting property',k,'to value',keyValue[k],'was:',t[k])
+          t[k] = keyValue[k]
+          if (k === 'done') {
+            t._Todo.set('complete',todo[k])
+          }
+          if (k === 'text') {
+            t._Todo.set('title',todo[k])
+          }
+        }
+        return todo._Todo.save()
+        .catch(e => {
+          console.error('error updating todo',todo,e)
+        })
+      }
+    })
   }
 
   deleteTodo(todo: Todo): boolean {
@@ -109,9 +136,11 @@ export class TodoService implements TodoApiService {
   getObservable():Observable<Todo[]>{
     return this.todosObservable
   }
+  
   private todosSubject: BehaviorSubject<Todo[]> = new BehaviorSubject([])
   private todosObservable: Observable<Todo[]> = this.todosSubject.asObservable()
   private todoList:Todo[]
+  
   constructor() {
     this.getTodos({})
     console.info('todoList',this.todoList)

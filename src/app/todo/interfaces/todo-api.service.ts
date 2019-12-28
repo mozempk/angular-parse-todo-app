@@ -17,6 +17,6 @@ export abstract class TodoApiService {
   abstract getTodo(user: any,id:string):Todo_t
   abstract getTodos(user?: any,limit?:number):Todo_t[]
   abstract newTodo(todo: any, user?: any):Promise<Todo_t>
-  abstract editTodo(user: any,id:string, keyValue:any):Todo_t
+  abstract editTodo(todo: Todo_t, keyValue: any):Todo_t | void
   abstract deleteTodo(todo:Todo_t):boolean
 }

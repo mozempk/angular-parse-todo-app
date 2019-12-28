@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { TodoService } from '../../services/todo.service';
+
 import { Router } from '@angular/router';
+import { TodoApiService } from '../../interfaces/todo-api.service';
 
 @Component({
   selector: 'app-newtodo',
@@ -10,19 +11,19 @@ import { Router } from '@angular/router';
 export class NewtodoComponent implements OnInit {
 
   private todoText:String
-  constructor(private todoService: TodoService) {}
+  constructor(private todoApiService: TodoApiService,private router: Router) {}
 
   ngOnInit() {
   }
 
   onSubmit(){
     if (this.todoText !== "") {
-      this.todoService.newTodo({title: this.todoText, complete: false})
-        // .then(() => {
-        //   console.info('done creating todo, redirecting')
-        //   this.router.navigateByUrl('todos')
-        //   // this.router.navigate(['todos'])
-        // })
+      this.todoApiService.newTodo({title: this.todoText, complete: false})
+        .then(() => {
+          console.info('done creating todo, redirecting')
+          //this.router.navigateByUrl('todos')
+          this.router.navigate(['todos'])
+        })
     }
   }
 }

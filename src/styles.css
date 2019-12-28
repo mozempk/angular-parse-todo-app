@@ -2,5 +2,7 @@
 @import url('https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css');
 @import url('https://cdn.materialdesignicons.com/4.7.95/css/materialdesignicons.min.css');
 html, body{
-    height: 100vh;
+    height: 100%;
+    padding: 0;
+    margin: 0;
    }
