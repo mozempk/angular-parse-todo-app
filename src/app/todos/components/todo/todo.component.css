@@ -1,0 +1,6 @@
+.greenCheck {
+    color: green;
+}
+.todoDone {
+    text-decoration: line-through;
+}

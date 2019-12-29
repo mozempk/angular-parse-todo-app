@@ -7,7 +7,7 @@ import { NavItemsService, NavItem } from '../../services/nav-items.service';
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent implements OnInit {
-  private title:string = 'Home'
+  private title:string = 'TodoApp'
   private navItems:NavItem[]
   constructor(navItemsService: NavItemsService) {
     navItemsService.getObservable().subscribe(items => {
