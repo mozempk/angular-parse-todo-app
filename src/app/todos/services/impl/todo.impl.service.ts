@@ -42,6 +42,12 @@ export class TodoService implements ITodoService {
             this.todoList = todos
           })
       })
+      .catch(e => {
+        this.setNotificationMessage({
+          'type':'error',
+          'message':'Could\'nt get todos: '+ e
+        })
+      })
     return todoList
   }
 
@@ -69,25 +75,30 @@ export class TodoService implements ITodoService {
           mt.done = t.get('complete')
           mt.text = t.get('title')
           mt._Todo = t
-          console.info('Succesfully created new todo:',mt)
+          this.setNotificationMessage({
+            'type':'success',
+            'message':'Todo created successfully'
+          })
           this.todosSubject.next(null)
           return new Promise((resolve, reject) => {
             let size = this.todoList.length
             this.todoList.unshift(mt)
-            console.info('[NewTodo] current todoList: ',this.todoList)
             this.todosSubject.next(this.todoList)
             if (this.todoList.length > size) resolve()
+          })
+        })
+        .catch(e => {
+          this.setNotificationMessage({
+            'type':'error',
+            'message':'Could\'nt create todo: '+ e
           })
         })
   }
 
   editTodo(todo: Todo, keyValue:any): void {
-    console.info('Editing todo:',todo,'new values',keyValue)
     return this.todoList.forEach(t => {
       if(t.id === todo.id) {
-        console.info('found todo with id: ',t.id)
         for(let k of Object.keys(keyValue)) {
-          console.info('setting property',k,'to value',keyValue[k],'was:',t[k])
           t[k] = keyValue[k]
           if (k === 'done') {
             t._Todo.set('complete',todo[k])
@@ -96,8 +107,16 @@ export class TodoService implements ITodoService {
             t._Todo.set('title',todo[k])
           }
         }
+        this.setNotificationMessage({
+          'type':'info',
+          'message':'Updated todo'
+        })
         return todo._Todo.save()
         .catch(e => {
+          this.setNotificationMessage({
+            'type':'error',
+            'message':'Could\'nt update todo: '+ e
+          })
           console.error('error updating todo',todo,e)
         })
       }
@@ -108,11 +127,17 @@ export class TodoService implements ITodoService {
     return todo._Todo.destroy().then(data => {
       this.todoList.splice(this.todoList.indexOf(todo),1)
       this.todosSubject.next(this.todoList)
-      console.info('succesfully deleted todo')
+      this.setNotificationMessage({
+        'type':'success',
+        'message': 'Successfully deleted todo'
+      });
       return true
     })
     .catch(e => {
-      console.error('couldnt delete todo',e)
+      this.setNotificationMessage({
+        'type':'error',
+        'message':'Could\'nt delete todo: '+ e
+      })
     })
   }
 
@@ -137,6 +162,17 @@ export class TodoService implements ITodoService {
   getObservable():Observable<Todo[]>{
     return this.todosObservable
   }
+
+  getNotificationMessage(){
+    return this.notificationMessageObservable
+  }
+
+  setNotificationMessage(message?:any){
+    message ? this.notificationMessageSubject.next(message) : this.notificationMessageSubject.next(undefined) 
+  }
+  
+  private notificationMessageSubject = new BehaviorSubject<any>(undefined)
+  private notificationMessageObservable = this.notificationMessageSubject.asObservable()
 
   private todosSubject: BehaviorSubject<Todo[]> = new BehaviorSubject([])
   private todosObservable: Observable<Todo[]> = this.todosSubject.asObservable()

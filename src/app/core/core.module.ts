@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
 import { NavItemsService } from './services/nav-items.service';
 import { IAuthService } from '../auth/services/auth.service';
 import { AuthService } from '../auth/services/impl/auth.impl.service';
-
+import { NotificationService } from './services/notification.service'
 @NgModule({
   declarations: [NavBarComponent, FooterComponent],
   imports: [
@@ -19,7 +19,8 @@ import { AuthService } from '../auth/services/impl/auth.impl.service';
       provide: IAuthService,
       useClass: AuthService
     },
-    NavItemsService
+    NavItemsService,
+    NotificationService
   ],
   exports: [NavBarComponent, FooterComponent]
 })

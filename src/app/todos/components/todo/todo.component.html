@@ -10,10 +10,10 @@
           </form>
       </div>
       <div class="col-3">
-          <div class="row justify-content-center">
+          <div class="row justify-content-end pl-4 pr-4">
               <h6 class="card-subtitle mb-2 text-muted">{{getFormattedDate()}}</h6>
           </div>
-          <div class="row justify-content-center">
+          <div class="row justify-content-end pr-3">
             <div (click)="toggleDone()" [ngClass]="{'mdi': true, 'mdi-check-circle-outline': true, 'greenCheck':todo.done}"  style="font-size: 48px;"></div>
           </div>
       </div>

@@ -31,8 +31,10 @@ export class AuthService implements IAuthService {
       user.id = _user.id
       user._user = _user
       this.userSubject.next(user)
+      this.setNotificationMessage({'type':'success','message':'Welcome back '+user.name+'!'})
       return user
     }
+    
     return user
   }
   signup(username: string, password: string, email?: string): User {
@@ -48,11 +50,13 @@ export class AuthService implements IAuthService {
         user.id = _user.id
         this.userSubject.next(user)
         console.info('user successfully signed up: ',user)
+        this.setNotificationMessage({'type':'success','message':'Welcome '+user.name+'!'})
         this.router.navigate(['/todos'])
         return user
       })
       .catch((e: any) => {
-        console.error('Cannot signup user',e)
+        this.setNotificationMessage({'type':'error','message':'An error occurred: '+ e})
+        //console.error('Cannot signup user',e)
       })
       console.info("returning",user)
       return user
@@ -67,10 +71,12 @@ export class AuthService implements IAuthService {
         user.id = _user.id
         this.userSubject.next(user)
         this.router.navigate(['/todos'])
+        this.setNotificationMessage({'type':'success','message':'Welcome '+user.name+'!'})
         return user
       })
       .catch(e => {
-        console.error('Error logging in user',e)
+        this.setNotificationMessage({'type':'error','message':'An error occurred: '+ e})
+        //console.error('Error logging in user',e)
         return undefined
       })
     return user
@@ -82,18 +88,29 @@ export class AuthService implements IAuthService {
         console.info('successfully logged out')
         v = true
         this.userSubject.next(new User)
+        this.setNotificationMessage({'type':'success','message':'Bye!'})
         this.router.navigate([''])
       })
       .catch(e => {
-        console.error('couldnt log out user')
+        this.setNotificationMessage({'type':'error','message':'An error occurred: '+ e})
+        //console.error('couldnt log out user')
         v = false
       })
       return v
   }
 
+  getNotificationMessage(){
+    return this.notificationMessageObservable
+  }
+
+  setNotificationMessage(message?:any){
+    message ? this.notificationMessageSubject.next(message) : this.notificationMessageSubject.next(undefined) 
+  }
+  
+  private notificationMessageSubject = new BehaviorSubject<any>(undefined)
+  private notificationMessageObservable = this.notificationMessageSubject.asObservable()
   private userSubject = new BehaviorSubject<User>(new User())
-  //can improve, use getter function for userObservable
-  public userObservable = this.userSubject.asObservable()
+  private userObservable = this.userSubject.asObservable()
   constructor(Router: Router) {
     this.router = Router
     Parse.initialize(environment.parseAppId)

@@ -13,4 +13,6 @@ export abstract class IAuthService {
   abstract restore():User | void
   abstract isAuthenticated():boolean
   abstract getObservable():Observable<User>
+  abstract getNotificationMessage():Observable<any>
+  abstract setNotificationMessage(message?:any):void
 }

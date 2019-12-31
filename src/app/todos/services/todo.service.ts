@@ -13,4 +13,6 @@ export abstract class ITodoService {
   abstract newTodo(todo: any, user?: any):Promise<Todo_t>
   abstract editTodo(todo: Todo_t, keyValue: any):Todo_t | void
   abstract deleteTodo(todo:Todo_t):boolean
+  abstract getNotificationMessage():Observable<any>
+  abstract setNotificationMessage(message?:any):void
 }
