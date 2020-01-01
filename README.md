@@ -1,6 +1,19 @@
 # AngularTodoApp
+Angular excercise for a todo list application, it's a flexible built app, the current implementation of the authService and todoService grant comunications with a [ParseApi](https://parseplatform.org/) but simply changing the implementation for those abstract classes will enable comunication with any API server.
+
+The goal with this project was to create an application with the Angular framework and make it as modular, readable and flexible as possible, to mimic the features of a production ready app.
+
+the libraries I've used are:
+* [Bootstrap](https://getbootstrap.com/), with its dependencies, for styling
+* [material design icons](https://materialdesignicons.com/) for the checkmark icon
+* [ngx-toastr](https://github.com/scttcper/ngx-toastr) for toast notification
+* [Parse JS SDK](https://docs.parseplatform.org/js/guide/) for parse platform comunication
+
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.3.
+
+# Demo
+[TodoApp](https://angular-todo.mpk.dynu.net)
 
 ## Development server
 
